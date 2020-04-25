@@ -5,3 +5,8 @@ body {
 footer  {
     padding-top: 20px;
 }
+
+#news-img {
+    position: relative;
+    left: 23%;
+}

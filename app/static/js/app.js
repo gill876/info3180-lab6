@@ -49,15 +49,17 @@ Vue.component('news-list', {
       <ul class="row news__list">
         <div v-for="article in articles" class="news__item col-6 p-3">
           <div class="card border-dark" >
-            <img src="..." class="card-img-top" alt="...">
+            <img :src="article.urlToImage" v-if= "article.urlToImage" class="card-img-top" alt="...">
+            <img id="news-img" src="https://storage.needpix.com/rsynced_images/news-2389226_1280.png" v-if= "!article.urlToImage" class="card-img-top w-50" alt="News Icon">
             <div class="card-body">
-              <h5 class="card-title">{{ article.title }}</h5>
+              <h5 class="card-title font-weight-bold">{{ article.title }}</h5>
               <p class="card-text">{{ article.description }}</p>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Article from: {{ article.source.name }}</li>
+              <li class="list-group-item font-italic">Article from: {{ article.source.name }}</li>
+              <li class="list-group-item font-italic" v-if="article.author">Author: {{ article.author }}</li>
+              <!--<li class="list-group-item font-italic">Published on: </li>-->
+              
             </ul>
             <div class="card-body">
               <a v-bind:href="article.url" target="_blank" class="card-link">Go to article page</a>
