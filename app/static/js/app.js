@@ -1,4 +1,18 @@
 /* Add your Application JavaScript */
+const Home = Vue.component('home', {
+  template: `
+    <div class="home">
+    <img src="/static/images/logo.png" alt="VueJS Logo">
+    <h1>{{ welcome }}</h1>
+    </div>
+    `,
+  data: function() {
+    return {
+      welcome: 'Hello World! Welcome to VueJS'
+    }
+  }
+});
+
 Vue.component('app-header', {
     template: `
         <header>
@@ -11,10 +25,10 @@ Vue.component('app-header', {
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <router-link to="/" class="nav-link">Home</router-link>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">News</a>
+                    <router-link to="/news" class="nav-link">News</router-link>
                   </li>
                 </ul>
               </div>
@@ -42,7 +56,7 @@ Vue.component('app-footer', {
     }
 })
 
-Vue.component('news-list', {
+const NewsList = Vue.component('news-list', {
   template: `
   <div class="news">
     <h2>News</h2>
@@ -58,7 +72,7 @@ Vue.component('news-list', {
           <div class="card border-dark" >
             <img :src="article.urlToImage" v-if= "article.urlToImage" class="card-img-top" alt="...">
             <img id="news-img" src="https://storage.needpix.com/rsynced_images/news-2389226_1280.png" v-if= "!article.urlToImage" class="card-img-top w-50" alt="News Icon">
-            <div class="card-body">
+            <div class="card-body justify-content-center">
               <h5 class="card-title font-weight-bold">{{ article.title }}</h5>
               <p class="card-text">{{ article.description }}</p>
             </div>
@@ -102,18 +116,23 @@ Vue.component('news-list', {
     fetch('https://newsapi.org/v2/everything?q='+self.searchTerm + '&language=en&apiKey=b66e88fda1544e8a8315583297c5225e').then(function(response) {
         return response.json();
       }).then(function(data) {
-        console.log(data);
+        //console.log(data);
         self.articles = data.articles;
       });
     }
   }
 })
 
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
+    { path: '/', component: Home },
+    { path: '/news', component: NewsList }
+  ]
+});
 
 let app = new Vue({
     el: '#app',
-    data: {
-        welcome: 'Hello World! Welcome to VueJS'
-    }
+    router
 });
 
