@@ -31,6 +31,7 @@ Vue.component('app-footer', {
         <footer>
             <div class="container">
                 <p>Copyright &copy {{ year }} Flask Inc.</p>
+                <p>Powered by NewsAPI.org</p>
             </div>
         </footer>
     `,
@@ -45,10 +46,24 @@ Vue.component('news-list', {
   template: `
   <div class="news">
     <h2>News</h2>
-      <ul class="news__list">
-        <li class="news__item">News item 1</li>
-        <li class="news__item">News item 2</li>
-        <li class="news__item">News item 3</li>
+      <ul class="row news__list">
+        <div v-for="article in articles" class="news__item col-6 p-3">
+          <div class="card border-dark" >
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ article.title }}</h5>
+              <p class="card-text">{{ article.description }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Cras justo odio</li>
+              <li class="list-group-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item">Article from: {{ article.source.name }}</li>
+            </ul>
+            <div class="card-body">
+              <a v-bind:href="article.url" target="_blank" class="card-link">Go to article page</a>
+            </div>
+          </div>
+        </div>
       </ul>
   </div>
   `,
