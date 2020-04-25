@@ -29,7 +29,7 @@ Vue.component('app-header', {
 Vue.component('app-footer', {
     template: `
         <footer>
-            <div class="container">
+            <div class="container justify-content-center">
                 <p>Copyright &copy {{ year }} Flask Inc.</p>
                 <p>Powered by NewsAPI.org</p>
             </div>
@@ -46,6 +46,13 @@ Vue.component('news-list', {
   template: `
   <div class="news">
     <h2>News</h2>
+    <div class="form-inline d-flex justify-content-center">
+      <div class="form-group mx-sm-3 mb-2">
+        <label class="sr-only" for="search">Search</label>
+        <input type="search" name="search" v-model="searchTerm" id="search" class="form-control mb-2 mr-sm-2" placeholder="Enter search term here" />
+        <button class="btn btn-primary mb-2" @click="searchNews">Search</button>
+      </div>
+    </div>
       <ul class="row news__list">
         <div v-for="article in articles" class="news__item col-6 p-3">
           <div class="card border-dark" >
@@ -59,7 +66,6 @@ Vue.component('news-list', {
               <li class="list-group-item font-italic">Article from: {{ article.source.name }}</li>
               <li class="list-group-item font-italic" v-if="article.author">Author: {{ article.author }}</li>
               <!--<li class="list-group-item font-italic">Published on: </li>-->
-              
             </ul>
             <div class="card-body">
               <a v-bind:href="article.url" target="_blank" class="card-link">Go to article page</a>
@@ -69,9 +75,9 @@ Vue.component('news-list', {
       </ul>
   </div>
   `,
-  data: function() {
+  /*data: function() {
       return {}
-  },
+  },*/
 
   created: function() {
     let self = this;
@@ -82,11 +88,25 @@ Vue.component('news-list', {
           self.articles = data.articles;
         });
    },
+   
    data: function() {
     return {
-      articles: []
+      articles: [],
+      searchTerm: ''
     }
-   }
+   },
+
+   methods: {
+    searchNews: function() {
+    let self = this;
+    fetch('https://newsapi.org/v2/everything?q='+self.searchTerm + '&language=en&apiKey=b66e88fda1544e8a8315583297c5225e').then(function(response) {
+        return response.json();
+      }).then(function(data) {
+        console.log(data);
+        self.articles = data.articles;
+      });
+    }
+  }
 })
 
 
